@@ -75,6 +75,7 @@
     shell = pkgs.zsh;
     packages = with pkgs; [
       firefox
+      brave
       thunderbird
     ];
   };
@@ -91,6 +92,7 @@
     docker-compose
     git
     meld
+    python3
     vscode
     spice-vdagent
     zsh
