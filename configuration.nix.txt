@@ -101,7 +101,7 @@
     zsh-history
     zsh-git-prompt
     zsh-autocomplete
-    zsh-powerlevel10k
+    oh-my-zsh
     bitwarden
     bitwarden-cli
   ];
@@ -126,6 +126,14 @@
 
   # Enable zsh
   programs.zsh.enable = true;
+
+  # Oh My zsh
+  programs.zsh.ohMyZsh = {
+    enable = true;
+    plugins = [ "git" "python" "man" ];
+    theme = "agnoster";
+  };
+
 
   # List services that you want to enable:
 
