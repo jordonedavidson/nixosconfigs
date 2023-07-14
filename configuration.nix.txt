@@ -110,7 +110,7 @@
   # Adding fonts to the system that are nice to have.
   fonts.fonts = with pkgs; [
     (nerdfonts.override {
-      fonts = [ "MesloLGS NF Regular" "MesloLGS NF Bold" "MesloLGS NF Italic" "MesloLGS NF Bold Italic" ];
+      fonts = [ "Meslo" ];
     })
     fira-code 
     fira-code-symbols 
