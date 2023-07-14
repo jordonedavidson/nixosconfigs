@@ -72,11 +72,15 @@
     isNormalUser = true;
     description = "Jordon Davidson";
     extraGroups = [ "networkmanager" "wheel" "docker" ];
+    openssh.authorizedKeys.keys = [
+      "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQCww8wJQ3xF9pTEcemihXZazwQHPxG62S+3Gv7GtM9eNm0eWBnppvyierdCOwHJ7RHiMdyZvPXhnQ6qTNOc0+8mcIcWc02y9T3bhNfXljLnmaK/aTshioN0ZWDqglj6NveCGMNYBYM4bR6w+tctWbDP8D8UEupy8F8yOSBnWaYjSM2zY10RO7oR/8ZU/roATaeoVdt8fIZBPh/RDq4yem4LKWifyfbgrMIIqWKguR5P/oWYtXOq78LqlAl/NrjAmARyvKn9Tm/LjP6EXNl1QCp6+gaY7yzEB5ONFD0hTMM+GrZCIwN34K46hSmadK7VYsDnpa56fmfQbiqMe7j6OACWO0cb4HcmllMVvrbpp0lyHkpuBTJ9HuNdvXrmxcavZPU1u8XrDAiBIn1izc+SGCCekxFbQl+z1+lzEnYfdaKQQ4/lspLUbZcS7b3u9M4p5UycJVh1eDNRP+1jBG8C1lV/Hbrcmp5Liar2MvygJPguhgUhDBNVtrSAx87cxn6gyB0= jordondavidson@pop-os"
+    ]
     shell = pkgs.zsh;
     packages = with pkgs; [
       firefox
       brave
       thunderbird
+      zsh-powerlevel10k
     ];
   };
 
@@ -98,7 +102,8 @@
     zsh-history
     zsh-git-prompt
     zsh-autocomplete
-    zsh-powerlevel9k
+    bitwarden
+    bitwarden-cli
   ];
 
   # Some programs need SUID wrappers, can be configured further or are
