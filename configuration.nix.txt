@@ -80,7 +80,6 @@
       firefox
       brave
       thunderbird
-      zsh-powerlevel10k
     ];
   };
 
@@ -102,6 +101,7 @@
     zsh-history
     zsh-git-prompt
     zsh-autocomplete
+    zsh-powerlevel10k
     bitwarden
     bitwarden-cli
   ];
