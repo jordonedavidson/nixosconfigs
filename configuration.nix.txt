@@ -101,9 +101,12 @@
     zsh-history
     zsh-git-prompt
     zsh-autocomplete
+    zsh-autosuggestions
     oh-my-zsh
+    powerline-fonts
     bitwarden
     bitwarden-cli
+    mkcert
   ];
 
   # Fonts
@@ -133,6 +136,12 @@
     plugins = [ "git" "python" "man" ];
     theme = "agnoster";
   };
+
+  # Security 
+  # Additional trusted root ca certs.
+  security.pki.certificateFiles = [
+    /home/jordon/.local/share/mkcert/rootCA.pem
+  ];
 
 
   # List services that you want to enable:
