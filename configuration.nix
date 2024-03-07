@@ -4,6 +4,12 @@
 
 { config, pkgs, ... }:
 
+let 
+  warp-terminal = pkgs.fetchurl {
+    url = "https://releases.warp.dev/stable/v0.2024.02.20.08.01.stable_02/Warp-x86_64.AppImage";
+    sha256 = "1isspfcv6214b7ixca9hc1pzs85dvrsqsqcajd43415lbmqqpmm7";
+  };
+in 
 {
   imports =
     [ # Include the results of the hardware scan.
@@ -93,6 +99,8 @@
 
   # List packages installed in system profile. To search, run:
   # $ nix search wget
+  # Bring in Warp Terminal app-image.
+
   environment.systemPackages = with pkgs; [
     vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
     wget
@@ -110,7 +118,18 @@
     bitwarden
     bitwarden-cli
     mkcert
+    (pkgs.symlinkJoin {
+      name = "warp-terminal";
+      paths = [ pkgs.appimage-run ];
+      buildInputs = [ pkgs.makeWrapper ];
+      postBuild = ''
+        mv $out/bin/appimage-run $out/bin/warp-terminal
+        wrapProgram $out/bin/warp-terminal --add-flags "${warp-terminal}"
+      '';
+    })
   ];
+  
+  
 
   # Fonts
   # Adding fonts to the system that are nice to have.
@@ -121,6 +140,7 @@
     fira-code 
     fira-code-symbols 
   ];
+  
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
