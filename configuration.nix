@@ -11,11 +11,9 @@
     ];
 
   # Bootloader.
-  boot.loader.grub = {
-    enable = true;
-    device = "/dev/vda";
-    useOSProber = true;
-  };
+  boot.loader.grub.enable = true;
+  boot.loader.grub.device = "/dev/vda";
+  boot.loader.grub.useOSProber = true;
 
   networking.hostName = "nixos"; # Define your hostname.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
@@ -31,29 +29,39 @@
   time.timeZone = "America/Moncton";
 
   # Select internationalisation properties.
-  i18n.defaultLocale = "en_CA.UTF-8";
+  i18n = {
+    defaultLocale = "en_CA.UTF-8";
+    supportedLocales = [ "en_CA.UTF-8/UTF-8" ];
+  };
+
+  # Set ownership and permissions for /etc/nixos
+  systemd.tmpfiles.rules = [
+    "d /etc/nixos 0770 root wheel - -"
+    "Z /etc/nixos/* 0660 root wheel - -"
+  ];
+
+  # Enable Cosmic Desktop
+  services.desktopManager.cosmic.enable = true;
+  services.displayManager.cosmic-greeter.enable = true;
 
   # Enable the X11 windowing system.
-  services.xserver.enable = true;
+  # services.xserver.enable = true;
 
   # Enable the GNOME Desktop Environment.
-  services.xserver.displayManager.gdm.enable = true;
-  services.xserver.desktopManager.gnome.enable = true;
-
-  # Enable cosmic desktop.
-  #services.xserver.desktopManager.system76cosmic.enable = true;
+  # services.xserver.displayManager.gdm.enable = true;
+  # services.xserver.desktopManager.gnome.enable = true;
 
   # Configure keymap in X11
-  services.xserver = {
-    layout = "us";
-    xkbVariant = "";
-  };
+  #services.xserver.xkb = {
+  #  layout = "us";
+  #  variant = "";
+  #};
 
   # Enable CUPS to print documents.
   services.printing.enable = true;
 
   # Enable sound with pipewire.
-  sound.enable = true;
+  #sound.enable = true;
   hardware.pulseaudio.enable = false;
   security.rtkit.enable = true;
   services.pipewire = {
@@ -81,15 +89,21 @@
       "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQCww8wJQ3xF9pTEcemihXZazwQHPxG62S+3Gv7GtM9eNm0eWBnppvyierdCOwHJ7RHiMdyZvPXhnQ6qTNOc0+8mcIcWc02y9T3bhNfXljLnmaK/aTshioN0ZWDqglj6NveCGMNYBYM4bR6w+tctWbDP8D8UEupy8F8yOSBnWaYjSM2zY10RO7oR/8ZU/roATaeoVdt8fIZBPh/RDq4yem4LKWifyfbgrMIIqWKguR5P/oWYtXOq78LqlAl/NrjAmARyvKn9Tm/LjP6EXNl1QCp6+gaY7yzEB5ONFD0hTMM+GrZCIwN34K46hSmadK7VYsDnpa56fmfQbiqMe7j6OACWO0cb4HcmllMVvrbpp0lyHkpuBTJ9HuNdvXrmxcavZPU1u8XrDAiBIn1izc+SGCCekxFbQl+z1+lzEnYfdaKQQ4/lspLUbZcS7b3u9M4p5UycJVh1eDNRP+1jBG8C1lV/Hbrcmp5Liar2MvygJPguhgUhDBNVtrSAx87cxn6gyB0= jordondavidson@pop-os"
     ];
     shell = pkgs.zsh;
-    packages = with pkgs; [
-      firefox
-      brave
-      thunderbird
-    ];
   };
+
+  home-manager.users.jordon = {
+    home.stateVersion = "24.05";
+    imports = [ ./home.nix ];
+  };
+
+  # Set backup file extension
+  home-manager.backupFileExtension = "backup";
 
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
+
+  # Allow Flakes
+  nix.settings.experimental-features = [ "nix-command" "flakes" ];
 
   # List packages installed in system profile. To search, run:
   # $ nix search wget
@@ -97,30 +111,29 @@
     vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
     wget
     docker
+    firefox
     git
-    meld
     python3
-    vscode
     spice-vdagent
     zsh
     zsh-history
     zsh-git-prompt
     oh-my-zsh
     powerline-fonts
-    bitwarden
-    bitwarden-cli
-    mkcert
+    vscode
   ];
 
   # Fonts
-  # Adding fonts to the system that are nice to have.
-  fonts.fonts = with pkgs; [
-    (nerdfonts.override {
-      fonts = [ "Meslo" ];
-    })
-    fira-code 
-    fira-code-symbols 
-  ];
+  fonts = {
+    enableDefaultPackages = true;    
+    packages = with pkgs; [
+      (nerdfonts.override {
+        fonts = [ "Meslo" ];
+      })
+      fira-code
+      fira-code-symbols
+    ];
+  };
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
@@ -130,35 +143,20 @@
   #   enableSSHSupport = true;
   # };
 
-  # Enable zsh
+  # Enable programs
   programs.zsh = {
     enable = true;
-    enableCompletion = true;
-    autosuggestions.enable = true;
-    # Oh My zsh
-    ohMyZsh = {
-      enable = true;
-      plugins = [ "git" "python" "man" ];
-      theme = "agnoster";
-    };
   };
-
-  # Security 
-  # Additional trusted root ca certs.
-  security.pki.certificateFiles = [
-    /home/jordon/.local/share/mkcert/rootCA.pem
-  ];
-
 
   # List services that you want to enable:
 
   # Enable the OpenSSH daemon.
   services.openssh.enable = true;
-  
-  # Enable spice virtual agent
+
+  # Spice VA
   services.spice-vdagentd.enable = true;
-  
-  # Add docker
+
+  # Add Docker
   virtualisation.docker.enable = true;
 
   # Open ports in the firewall.
@@ -173,6 +171,6 @@
   # this value at the release version of the first install of this system.
   # Before changing this value read the documentation for this option
   # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
-  system.stateVersion = "23.05"; # Did you read the comment?
+  system.stateVersion = "23.11"; # Did you read the comment?
 
 }
