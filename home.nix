@@ -6,6 +6,7 @@
   # Add programs
   home.packages = with pkgs; [
     chromium
+    librewolf
     thunderbird
     meld
     bitwarden
