@@ -132,7 +132,7 @@
     fontconfig.enable=true;
     enableDefaultPackages = true;    
     packages = with pkgs; [
-      nerd-fonts.meslo
+      nerd-fonts.meslo-lg
       fira-code
       fira-code-symbols
     ];
