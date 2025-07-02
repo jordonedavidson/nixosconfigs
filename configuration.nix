@@ -128,9 +128,11 @@
 
   # Fonts
   fonts = {
+    fontDir.enable=true;
+    fontconfig.enable=true;
     enableDefaultPackages = true;    
     packages = with pkgs; [
-      nerd-fonts.Meslo
+      meslo-nerd-font
       fira-code
       fira-code-symbols
     ];
