@@ -105,6 +105,9 @@
   # Allow Flakes
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
 
+  # Increase download buffer to 500MB
+  nix.settings.download-buffer-size = 524288000;
+
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
