@@ -15,7 +15,7 @@
   ];
 
   # Set home-manager version
-  home.stateVersion = "25.05";
+  home.stateVersion = "24.11";
 
   # Let home manager install and manage itself
   programs.home-manager.enable = true;
